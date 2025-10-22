@@ -1,0 +1,69 @@
+REQUIREMENTS CHECKLIST (For Interviewer)
+MUST HAVE (Essential - 70% Score)
+
+ __init__: Initializes queue.Queue, threading.Event, thread-safe counter
+ start(): Creates and starts daemon producer thread
+ stop(): Sets stop event and joins threads
+ _producer_loop(): While loop with event.wait(), fetch/validate/enqueue
+ _validate_trade(): Checks all 5 validation rules
+ Thread-safe operations (locks where needed)
+
+SHOULD HAVE (Good - 90% Score)
+
+ _generate_sample_trade(): Creates valid random trade data
+ _fetch_from_api(): Simulates API with random success/failure
+ Error handling (try/except in producer loop)
+ Graceful shutdown (< 2s after stop())
+
+NICE TO HAVE (Excellent - 100% Score)
+
+ Proper logging instead of print statements
+ Configurable data source switching
+ Metrics (trades/second)
+ Unit test methods
+
+
+SCORING RUBRIC
+
+Criteria,Points,Max
+Correct Producer Pattern,30,30
+Thread Safety,20,20
+Validation Logic,20,20
+Lifecycle Management,15,15
+Error Handling,10,10
+Code Quality/Readability,5,5
+TOTAL,,100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
