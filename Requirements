@@ -1,0 +1,22 @@
+A real-time trade blotter for a Front-Office Equities Trading Desk
+
+Traders need a realtime blotter that displays executed trades as soon as they happen, enriched with suitable reference data (e.g options strike/expiry, pricing attributes etc.) with filtering, sorting and aggregation capabilities.
+
+Key Requirements
+----------------
+Ingest trade data: Realtime feed integration -  via market feeds (e.g. Bloomberg, Refinitiv , Order management systems. Should support handling FIX protocols, websockets, or APIs from exchanges/brokers.
+Displays tabular data grid that updates in real-time,  with usual capabilities around sortable/filterable views, aggregation (e.g net shares per symbol)
+Integrate with internal reference data sources to source static/semi-static pricing attributes (some update once a day and some more frequent)
+Scalability and Performance: Handle high-volume trade spikes (in multiple parts of stack)
+Require server side state management: The goal is to keep the presentation layer as thin as possible, to ensure responsiveness and future proofing in terms of the choice of UI/delivery channel(for e.g. mobile). We also need to ensure there is low latency in terms of new position updates. Consider managing the state of individual client queries on server (handle all updates including new trades/amends/cancels etc and accordingly provide an updated view for consumption from UI in near real-time)
+
+Tasks
+-------
+Class Diagram: Represent the main classes/interfaces in a static UML style diagram
+Model the sample trade object structure that can provide an efficient indexing for filtering/sorting 
+Any other considerations/thoughts
+Expand the implementation of TradeIngestionService as per attached
+
+
+
+
