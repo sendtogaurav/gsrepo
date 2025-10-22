@@ -1,0 +1,112 @@
+"""
+TRADE VALIDATOR - MID-LEVEL PYTHON CHALLENGE
+
+Implement the validate_trades() function below.
+
+INPUT: List of dicts with raw trade data
+OUTPUT: Dict with validation summary and results
+"""
+
+from typing import List, Dict, Any
+from datetime import datetime
+import re
+
+# SAMPLE INPUT DATA (DO NOT MODIFY)
+SAMPLE_TRADES = [
+    {
+        "symbol": "AAPL",
+        "side": "BUY",
+        "quantity": 100,
+        "price": 150.25,
+        "timestamp": "2023-10-01T09:30:00"
+    },
+    {
+        "symbol": "INVALID",
+        "side": "BUY",
+        "quantity": 50,
+        "price": 200.0,
+        "timestamp": "2023-10-01T09:31:00"
+    },
+    {
+        "symbol": "GOOGL",
+        "side": "SELL",
+        "quantity": -25,  # Invalid: negative quantity
+        "price": 2500.75,
+        "timestamp": "2023-10-01T09:32:00"
+    },
+    {
+        "symbol": "MSFT",
+        "side": "BUY",
+        "quantity": 200,
+        "price": 0.0,  # Invalid: zero price
+        "timestamp": "2023-10-01T09:33:00"
+    },
+    {
+        "symbol": "TSLA",
+        "side": "BUY", 
+        "quantity": 75,
+        "price": 220.50,
+        "timestamp": "2023-10-02T09:34:00"
+    },
+    {
+        "symbol": "AMZN",
+        "side": "BUY",
+        "quantity": 150,
+        "price": 3000.0,
+        "timestamp": "invalid-date"  # Invalid timestamp
+    }
+]
+
+# VALID SYMBOLS (DO NOT MODIFY)
+VALID_SYMBOLS = {"AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NVDA"}
+
+# VALID SIDES (DO NOT MODIFY)
+VALID_SIDES = {"BUY", "SELL"}
+
+def validate_trades(trades: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Validate trades and return summary report.
+    
+    Args:
+        trades: List of trade dictionaries
+        
+    Returns:
+        Dict with:
+        - valid_count: int
+        - invalid_count: int  
+        - total_value: float
+        - valid_trades: List[dict] - with 'total_value' added
+        - invalid_reasons: List[str] - reasons for each invalid trade
+    """
+    # TODO: IMPLEMENT THIS FUNCTION
+    pass
+
+# TEST HARNESS (DO NOT MODIFY)
+def run_tests():
+    """Run test cases and print results"""
+    print("🧪 Running Trade Validator Tests...\n")
+    
+    result = validate_trades(SAMPLE_TRADES)
+    
+    print("📊 VALIDATION SUMMARY:")
+    print(f"Valid Trades: {result['valid_count']}")
+    print(f"Invalid Trades: {result['invalid_count']}")
+    print(f"Total Value: ${result['total_value']:,.2f}")
+    print("\n✅ VALID TRADES:")
+    for trade in result['valid_trades']:
+        print(f"  {trade['symbol']} - {trade['side']} {trade['quantity']} @ ${trade['price']:.2f} = ${trade['total_value']:.2f}")
+    
+    print("\n❌ INVALID TRADES:")
+    for reason in result['invalid_reasons']:
+        print(f"  {reason}")
+    
+    # Assertions
+    assert result['valid_count'] == 2, "Wrong valid count"
+    assert result['invalid_count'] == 4, "Wrong invalid count"
+    assert abs(result['total_value'] - 37128.75) < 0.01, "Wrong total value"
+    
+    print("\n🎉 ALL TESTS PASSED!")
+    return result
+
+if __name__ == "__main__":
+    run_tests()
