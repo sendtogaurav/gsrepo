@@ -1,3 +1,11 @@
+VALIDATION RULES (MUST IMPLEMENT ALL)
+1.  Symbol: Must be in VALID_SYMBOLS
+2.  Side: Must be “BUY” or “SELL”
+3.  Quantity: Must be positive integer (> 0)
+4.  Price: Must be positive float (> 0)
+5.  Timestamp: Must be valid ISO format (YYYY-MM-DDTHH:MM:SS)
+
+
 """
 TRADE VALIDATOR - MID-LEVEL PYTHON CHALLENGE
 
