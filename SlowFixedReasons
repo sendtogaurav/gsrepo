@@ -1,0 +1,62 @@
+
+Why the sequential version is slow
+- Each API call blocks until the previous one finishes.
+- Network I/O is mostly waiting, not computing.
+- Total time ≈ sum of all request latencies.
+
+Multithreading
+- Good for moderate concurrency (10–100 threads).
+- Works with standard requests (library support inbuilt)
+
+Async Event Loop
+- No threads → no OS context switching.  Better scaling. upto 10k
+- Little bit complex
+- Requires AIO compatible libs (httpx or aiohttp)
+
+Next-> what if your bottleneck is something like legacy DB call. Event look will block as soon as it hit sync.
+=================================
+
+System Design
+
+- Add timeout handling
+- Add retry with exponential backoff
+- Add rate limiting (e.g., max 10 requests/sec)
+
+- Add caching (in‑memory or Redis)
+
+How do you scale this system?
+“You now need to fetch 1 million items per hour. How do you scale horizontally?”
+Expected answer
+- Stateless async workers → easy to scale
+- Use a distributed queue to fan out work
+- Auto‑scale based on:
+- queue depth
+- CPU usage
+- latency
+- Shard work across workers
+- Use multiple event loops (or multiple processes) per machine
+
+
+How do you reduce load on the external API?
+“The external API is expensive. How do you reduce the number of calls?”
+- Caching (Redis, Memcached)
+- Delta updates instead of full refresh
+
+
+“How would you monitor this system?”
+
+Metrics:
+- request latency
+- error rate
+- retry count
+- rate‑limit hits
+- cache hit ratio
+- queue depth
+
+
+
+
+
+
+
+
