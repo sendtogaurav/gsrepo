@@ -1,0 +1,10 @@
+def register_user(username, users=[]):
+    users.append(username)
+    return users
+
+print(register_user("alice"))
+print(register_user("bob"))
+print(register_user("charlie", ["admin"]))
+
+
+---------------
