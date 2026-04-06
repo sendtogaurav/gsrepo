@@ -1,0 +1,65 @@
+import asyncio
+import time
+import requests
+from concurrent.futures import ThreadPoolExecutor
+
+# LEGACY BLOCKING FUNCTION
+def legacy_network_call(url):
+    """
+    This is a 'blocking' function. In a standard async loop, 
+    this would stop all other tasks from running.
+    """
+    print(f"  [Thread] Fetching: {url}")
+    response = requests.get(url) 
+    time.sleep(1)  # Simulating high-latency I/O
+    return f"{url} -> {response.status_code}"
+
+async def main():
+    loop = asyncio.get_running_loop()
+    urls = ["https://google.com", "https://python.org", "https://github.com"]
+
+    # Define an Executor to manage a pool of worker threads
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        
+        # loop.run_in_executor(executor, func, *args)
+        # Offloads the sync function to a thread so the event loop stays free.
+        tasks = [
+            loop.run_in_executor(executor, legacy_network_call, url)
+            for url in urls
+        ]
+        
+        print("Main Loop: Tasks offloaded. The loop is still responsive!")
+        
+        # 'gather' waits for the threaded results to return to the async loop
+        results = await asyncio.gather(*tasks)
+        
+        for result in results:
+            print(f"Result: {result}")
+
+if __name__ == "__main__":
+    start = time.perf_counter()
+    asyncio.run(main())
+    print(f"Total time: {time.perf_counter() - start:.2f} seconds")
+
+***************************************************************************************************
+2. Discussion Questions for the Candidate
+The "Why": Why can't we simply use await legacy_network_call(url)?
+
+The "Mechanism": What happens to the Global Interpreter Lock (GIL) when requests.get is running inside that ThreadPoolExecutor?
+
+The "Alternative": If the blocking tasThe GIL?k was CPU-intensive (e.g., calculating a large matrix) instead of I/O-intensive, which Executor would you use and why?
+
+The "Modernization": If you were allowed to refactor the legacy library, which library would you replace requests with to make this code "natively" async?
+
+
+Why not await?
+legacy_network_call is a regular function (def). Awaiting it doesn't make it non-blocking; it just stops the loop until it finishes.
+
+The GIL?
+Standard I/O operations (like requests) release the GIL, allowing threads to run concurrently for network tasks.
+
+CPU vs I/O?
+Use ProcessPoolExecutor for CPU-bound tasks to bypass the GIL and utilize multiple CPU cores.
+
+Modernization?
+httpx or aiohttp. These libraries are designed for async/await and don't require an executor.
