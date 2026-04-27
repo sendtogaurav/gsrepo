@@ -1,3 +1,18 @@
+Reasoning for AsynIO:
+1.I/O Bound Nature: API calls are I/O bound. The CPU spends 99% of its time waiting for the network.
+2.Efficiency: asyncio uses a single-threaded event loop. It "pauses" a task when it hits an await (like a request) and moves to the next one.
+3.Overhead: threading requires the OS to manage context-switching between thousands of threads, each with its own memory stack. asyncio is much lighter, allowing you to handle thousands of connections concurrently on a single thread.
+4.The GIL: While threading does bypass the Global Interpreter Lock during I/O, asyncio is generally the modern standard for high-concurrency network tasks in Python.
+
+threading vs  asyncio
+Pre-emptive multitasking (OS switches) vs Cooperative multitasking (Task yields)
+Complexity -> High (Race conditions, Locks) vs Medium (Need to understand await/async)
+Scalability -> Limited by OS thread limits vs Very high (10k+ connections possible)
+Library Support -> Works with standard requests vs Requires async-compatible libs (httpx)
+
+"If you use asyncio, but the library you are forced to use is synchronous (like a legacy database driver), what happens to your performance?"
+The "Senior" Answer: "The event loop will block. One slow synchronous call will stop the entire loop, effectively making the program run one-at-a-time unless I wrap that specific call in a thread pool using loop.run_in_executor()."
+
 
 Why the sequential version is slow
 - Each API call blocks until the previous one finishes.
